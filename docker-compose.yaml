@@ -1,0 +1,17 @@
+version: "3.4"
+
+services:
+  sm-access:
+    image: ''
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: sm-access
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "127.0.0.1:6379:6379"

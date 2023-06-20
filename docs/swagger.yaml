@@ -1,0 +1,225 @@
+basePath: /api/v1
+definitions:
+  deviceController.CreateOneRequest:
+    properties:
+      imei:
+        type: string
+      name:
+        type: string
+    required:
+    - imei
+    - name
+    type: object
+  deviceController.CreateOneResponse:
+    properties:
+      device:
+        properties:
+          created_at:
+            type: string
+          id:
+            type: string
+          imei:
+            type: string
+          name:
+            type: string
+          updated_at:
+            type: string
+        type: object
+    type: object
+  deviceController.DeleteOneResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  deviceController.Device:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      imei:
+        type: string
+      name:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  deviceController.ErrorResponse:
+    properties:
+      errorCode:
+        type: integer
+      errorMessage:
+        type: string
+    type: object
+  deviceController.GetManyResponse:
+    properties:
+      devices:
+        items:
+          $ref: '#/definitions/deviceController.Device'
+        type: array
+    type: object
+  deviceController.GetOneResponse:
+    properties:
+      devices:
+        $ref: '#/definitions/deviceController.Device'
+    type: object
+  deviceController.UpdateOneRequest:
+    properties:
+      imei:
+        type: string
+      name:
+        type: string
+    type: object
+  deviceController.UpdateOneResponse:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      imei:
+        type: string
+      name:
+        type: string
+      updated_at:
+        type: string
+    type: object
+info:
+  contact: {}
+  title: LICARD BASE
+  version: "1.0"
+paths:
+  /devices:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - default: 30
+        description: limit element per page
+        in: query
+        name: per
+        required: true
+        type: integer
+      - default: 1
+        description: page number
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: фильтр по полному совпадению
+        in: query
+        name: filter[id][eq]
+        type: string
+      - description: фильтр по неполному совпадению
+        in: query
+        name: filter[name][includes]
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/deviceController.GetManyResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/deviceController.ErrorResponse'
+      tags:
+      - Device
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/deviceController.CreateOneRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/deviceController.CreateOneResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/deviceController.ErrorResponse'
+      tags:
+      - Device
+  /devices/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/deviceController.DeleteOneResponse'
+        "204":
+          description: No Content
+          schema:
+            $ref: '#/definitions/deviceController.ErrorResponse'
+      tags:
+      - Device
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/deviceController.GetOneResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/deviceController.ErrorResponse'
+      tags:
+      - Device
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/deviceController.UpdateOneRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/deviceController.UpdateOneResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/deviceController.ErrorResponse'
+      tags:
+      - Device
+swagger: "2.0"
