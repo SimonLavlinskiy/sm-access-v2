@@ -1,6 +1,8 @@
 package models
 
 import (
+	"github.com/google/uuid"
+	"gorm.io/gorm"
 	"time"
 )
 
@@ -11,8 +13,8 @@ type BaseModel struct {
 	DeletedAt *time.Time `gorm:"softDelete" json:"deleted_at"`
 }
 
-//func (base *BaseModel) BeforeCreate(scope *gorm.DB) error {
-//	id := uuid.New().String()
-//	scope.Statement.SetColumn("ID", id)
-//	return nil
-//}
+func (base *BaseModel) BeforeCreate(scope *gorm.DB) error {
+	id := uuid.New().String()
+	scope.Statement.SetColumn("ID", id)
+	return nil
+}
