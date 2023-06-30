@@ -1,12 +1,12 @@
 package config
 
 import (
-	"sm-access/src/models"
 	"fmt"
 	log "github.com/sirupsen/logrus"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"os"
+	"sm-access/src/models"
 )
 
 var Db *gorm.DB
@@ -40,6 +40,7 @@ func initMigrations() {
 	err := Db.AutoMigrate(
 		models.Device{},
 		models.User{},
+		models.Log{},
 	)
 	if err != nil {
 		log.Panicf("migration error: %v", err)

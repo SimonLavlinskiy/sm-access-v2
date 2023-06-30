@@ -1,8 +1,8 @@
 package deviceService
 
 import (
-	"sm-access/src/models"
 	"sm-access/config"
+	"sm-access/src/models"
 	"time"
 )
 
@@ -59,7 +59,6 @@ func (d DeviceService) CreateDevice(device models.Device) (models.Device, error)
 	err := db.Create(&device).Error
 
 	if err != nil {
-
 		return models.Device{}, err
 	}
 
@@ -97,4 +96,20 @@ func (d DeviceService) UpdateDevice(device models.Device, deviceId string) error
 	}
 
 	return nil
+}
+
+func (d DeviceService) GetOrCreateDevice(device models.Device) (resp models.Device, err error) {
+	err = config.Db.
+		FirstOrCreate(
+			&resp,
+			models.Device{
+				ProductName:  device.ProductName,
+				SerialNumber: device.SerialNumber,
+			}).Error
+
+	if err != nil {
+		return models.Device{}, err
+	}
+
+	return resp, nil
 }

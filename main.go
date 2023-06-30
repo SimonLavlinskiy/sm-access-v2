@@ -1,9 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"sm-access/config"
 	"sm-access/config/webServer"
 	"sm-access/src/controllers"
+	"sm-access/src/service/monitoringService"
+	"sm-access/src/service/socketService"
 )
 
 // @title           LICARD BASE
@@ -17,8 +20,16 @@ func main() {
 
 	e := webServer.InitServer()
 
+	server := socketService.StartServer(messageHandler)
+
+	go monitoringService.UsbMonitoring(server)
+
 	err := e.Run(":8000")
 	if err != nil {
 		panic(err)
 	}
+}
+
+func messageHandler(message []byte) {
+	fmt.Println(string(message))
 }
