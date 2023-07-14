@@ -1,9 +1,8 @@
 package deviceController
 
 import (
-	"strconv"
 	"github.com/gin-gonic/gin"
-
+	"strconv"
 )
 
 type Queries struct {
@@ -49,7 +48,7 @@ func GetQueries(c *gin.Context) (Queries, Meta) {
 		Page:    page,
 		Per:     per,
 		Deleted: deleted,
-		Name: 	 name,
+		Name:    name,
 	}
 	meta := Meta{
 		Page: page,

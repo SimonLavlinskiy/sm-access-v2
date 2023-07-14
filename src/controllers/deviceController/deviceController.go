@@ -2,6 +2,7 @@ package deviceController
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"math"
@@ -68,7 +69,6 @@ func (controller deviceController) GetOne(c *gin.Context) {
 
 	param := c.Param("id")
 
-
 	if param == "" {
 		e := "id parameter not specified"
 		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, ErrorResponse{ErrorMessage: &e, ErrorCode: http.StatusUnprocessableEntity})
@@ -102,22 +102,22 @@ func (controller deviceController) GetOne(c *gin.Context) {
 // @Success 200 {object} CreateOneResponse
 // @Success 401 {object} ErrorResponse
 // @Router /devices [post]
-func (controller deviceController) CreateOne(c *gin.Context){
+func (controller deviceController) CreateOne(c *gin.Context) {
 
 	request := &CreateOneRequest{}
-
 	service := deviceService.DeviceService{}
-
-	baseModel := model.BaseModel {
+	fmt.Println(request)
+	baseModel := model.BaseModel{
 		ID: (uuid.New()).String(),
 	}
 
-	device := model.Device {
-		BaseModel: 	baseModel,
-		Name:      	request.Name,
-	    Imei: 		request.Imei,
-	    Type:		request.Type,
-	    OSVersion:  request.OSVersion,
+	device := model.Device{
+		BaseModel: 		baseModel,
+		Name:      		request.Name,
+		Imei:      		request.Imei,
+		//Type:      		request.Type,
+		//OSVersion: 		request.OSVersion,
+		IsConnected: 	false,
 	}
 
 	device, err := service.CreateDevice(device)
@@ -130,7 +130,6 @@ func (controller deviceController) CreateOne(c *gin.Context){
 	response := CreateOneResponse{}
 	temporaryVariable, _ := json.Marshal(device)
 	err = json.Unmarshal(temporaryVariable, &response.Device)
-
 	c.AbortWithStatusJSON(http.StatusOK, CreateOneResponse{Device: response.Device})
 	return
 }
@@ -146,7 +145,7 @@ func (controller deviceController) CreateOne(c *gin.Context){
 // @Success 200 {object} UpdateOneResponse
 // @Success 401 {object} ErrorResponse
 // @Router /devices/{id} [put]
-func (controller deviceController) UpdateOne(c *gin.Context){
+func (controller deviceController) UpdateOne(c *gin.Context) {
 	id := c.Param("id")
 
 	if id == "" {
@@ -185,7 +184,7 @@ func (controller deviceController) UpdateOne(c *gin.Context){
 	err = json.Unmarshal(temporaryVariable, &response)
 	c.AbortWithStatusJSON(http.StatusOK, UpdateOneResponse{Id: device.ID, Name: device.Name, Imei: device.Imei})
 	return
-	
+
 }
 
 // DeleteOne
@@ -198,11 +197,10 @@ func (controller deviceController) UpdateOne(c *gin.Context){
 // @Success 200 {object} DeleteOneResponse
 // @Success 204 {object} ErrorResponse
 // @Router /devices/{id} [delete]
-func (controller deviceController) DeleteOne(c *gin.Context){
+func (controller deviceController) DeleteOne(c *gin.Context) {
 	service := deviceService.DeviceService{}
 
 	id := c.Param("id")
-
 
 	if id == "" {
 		e := "id parameter not specified"

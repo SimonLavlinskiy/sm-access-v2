@@ -1,6 +1,5 @@
 package userService
 
-
 import (
 	"sm-access/app/models"
 	"sm-access/config"

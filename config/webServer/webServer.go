@@ -1,13 +1,13 @@
 package webServer
 
 import (
-	"sm-access/src/controllers/deviceController"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	"sm-access/docs"
-	"os"
 	"net/http"
+	"os"
+	"sm-access/docs"
+	"sm-access/src/controllers/deviceController"
 )
 
 func InitServer() *gin.Engine {
@@ -27,11 +27,7 @@ func InitServer() *gin.Engine {
 
 	g.Use(Options)
 
-	
-
 	docs.SwaggerInfo.BasePath = "/api/v1"
-
-	
 
 	g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
@@ -46,7 +42,7 @@ func InitServer() *gin.Engine {
 				device.POST("", deviceController.DeviceController.CreateOne)
 				device.PUT(":id", deviceController.DeviceController.UpdateOne)
 				device.DELETE(":id", deviceController.DeviceController.DeleteOne)
-				
+
 			}
 		}
 
@@ -55,20 +51,20 @@ func InitServer() *gin.Engine {
 	return g
 }
 
-func Options(c *gin.Context){
+func Options(c *gin.Context) {
 	if c.Request.Method != "OPTIONS" {
-        // FIXIT
-        // TODO
-        c.Header("Access-Control-Allow-Origin", "*")
-        c.Header("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
-        c.Header("Allow", "GET,POST,OPTIONS")
-        c.Next()
-    } else {
-        c.Header("Access-Control-Allow-Origin", "*")
-        c.Header("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE,OPTIONS")
-        c.Header("Access-Control-Allow-Headers", "authorization, pragma, origin, content-type, accept, cache-control")
-        c.Header("Allow", "HEAD,GET,POST,PUT,PATCH,DELETE,OPTIONS")
-        c.Header("Content-Type", "application/json")
-        c.AbortWithStatus(http.StatusOK)
-    }
+		// FIXIT
+		// TODO
+		c.Header("Access-Control-Allow-Origin", "*")
+		c.Header("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
+		c.Header("Allow", "GET,POST,OPTIONS")
+		c.Next()
+	} else {
+		c.Header("Access-Control-Allow-Origin", "*")
+		c.Header("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE,OPTIONS")
+		c.Header("Access-Control-Allow-Headers", "authorization, pragma, origin, content-type, accept, cache-control")
+		c.Header("Allow", "HEAD,GET,POST,PUT,PATCH,DELETE,OPTIONS")
+		c.Header("Content-Type", "application/json")
+		c.AbortWithStatus(http.StatusOK)
+	}
 }
