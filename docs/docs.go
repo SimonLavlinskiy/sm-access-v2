@@ -236,7 +236,6 @@ var doc = `{
             "required": [
                 "imei",
                 "name",
-                "os_version",
                 "type"
             ],
             "properties": {

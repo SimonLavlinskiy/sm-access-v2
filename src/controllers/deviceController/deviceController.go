@@ -2,7 +2,6 @@ package deviceController
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"math"
@@ -105,19 +104,23 @@ func (controller deviceController) GetOne(c *gin.Context) {
 func (controller deviceController) CreateOne(c *gin.Context) {
 
 	request := &CreateOneRequest{}
+
+	if err := c.ShouldBindJSON(request); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 	service := deviceService.DeviceService{}
-	fmt.Println(request)
 	baseModel := model.BaseModel{
 		ID: (uuid.New()).String(),
 	}
 
 	device := model.Device{
-		BaseModel: baseModel,
-		Name:      request.Name,
-		Imei:      request.Imei,
-		//Type:      		request.Type,
-		//OSVersion: 		request.OSVersion,
-		IsConnected: false,
+		BaseModel: 		baseModel,
+		Name:      		request.Name,
+		Imei:      		request.Imei,
+		Type:      		request.Type,
+		OSVersion: 		request.OSVersion,
+		IsConnected: 	false,
 	}
 
 	device, err := service.CreateDevice(device)

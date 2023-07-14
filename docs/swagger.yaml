@@ -13,7 +13,6 @@ definitions:
     required:
     - imei
     - name
-    - os_version
     - type
     type: object
   deviceController.CreateOneResponse:
