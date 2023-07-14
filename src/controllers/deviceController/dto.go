@@ -32,10 +32,10 @@ type GetOneResponse struct {
 }
 
 type CreateOneRequest struct {
-	Name 		string 		`json:"name" validate:"required"`
-	Imei 		string 		`json:"imei" validate:"required"`
-	Type      	string    	`json:"type" validate:"required"`
-	OSVersion 	string    	`json:"os_version"`
+	Name      string `json:"name" validate:"required"`
+	Imei      string `json:"imei" validate:"required"`
+	Type      string `json:"type" validate:"required"`
+	OSVersion string `json:"os_version"`
 }
 
 type CreateOneResponse struct {
