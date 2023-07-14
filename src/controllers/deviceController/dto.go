@@ -32,8 +32,8 @@ type GetOneResponse struct {
 }
 
 type CreateOneRequest struct {
-	Name 		string `json:"name" validate:"required"`
-	Imei 		string `json:"imei" validate:"required"`
+	Name string `json:"name" validate:"required"`
+	Imei string `json:"imei" validate:"required"`
 }
 
 type CreateOneResponse struct {

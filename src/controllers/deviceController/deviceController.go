@@ -112,12 +112,12 @@ func (controller deviceController) CreateOne(c *gin.Context) {
 	}
 
 	device := model.Device{
-		BaseModel: 		baseModel,
-		Name:      		request.Name,
-		Imei:      		request.Imei,
+		BaseModel: baseModel,
+		Name:      request.Name,
+		Imei:      request.Imei,
 		//Type:      		request.Type,
 		//OSVersion: 		request.OSVersion,
-		IsConnected: 	false,
+		IsConnected: false,
 	}
 
 	device, err := service.CreateDevice(device)
