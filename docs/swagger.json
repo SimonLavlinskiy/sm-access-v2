@@ -219,13 +219,21 @@
             "type": "object",
             "required": [
                 "imei",
-                "name"
+                "name",
+                "os_version",
+                "type"
             ],
             "properties": {
                 "imei": {
                     "type": "string"
                 },
                 "name": {
+                    "type": "string"
+                },
+                "os_version": {
+                    "type": "string"
+                },
+                "type": {
                     "type": "string"
                 }
             }
@@ -246,6 +254,12 @@
                             "type": "string"
                         },
                         "name": {
+                            "type": "string"
+                        },
+                        "os_version": {
+                            "type": "string"
+                        },
+                        "type": {
                             "type": "string"
                         },
                         "updated_at": {
@@ -278,6 +292,12 @@
                 "name": {
                     "type": "string"
                 },
+                "os_version": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
                 "updated_at": {
                     "type": "string"
                 }
@@ -308,7 +328,7 @@
         "deviceController.GetOneResponse": {
             "type": "object",
             "properties": {
-                "devices": {
+                "device": {
                     "$ref": "#/definitions/deviceController.Device"
                 }
             }

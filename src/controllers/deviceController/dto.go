@@ -8,6 +8,8 @@ type Device struct {
 	Id   string `json:"id"`
 	Name string `json:"name"`
 	Imei string `json:"imei"`
+	Type		string `json:"type"`
+	OSVersion	string `json:"os_version"`
 	CreatedAt time.Time  `json:"created_at"`
 	UpdatedAt time.Time  `json:"updated_at"`
 }
@@ -30,8 +32,10 @@ type GetOneResponse struct {
 }
 
 type CreateOneRequest struct {
-		Name string `json:"name" validate:"required"`
-		Imei string `json:"imei" validate:"required"`
+	Name 		string `json:"name" validate:"required"`
+	Imei 		string `json:"imei" validate:"required"`
+	Type		string `json:"type" validate:"required"`
+	OSVersion	string `json:"os_version" validate:"required"`
 }
 
 type CreateOneResponse struct {
@@ -39,6 +43,8 @@ type CreateOneResponse struct {
 		Id   string `json:"id"`
 		Name string `json:"name"`
 		Imei string `json:"imei"`
+		Type		string `json:"type"`
+		OSVersion	string `json:"os_version"`
 		CreatedAt time.Time  `json:"created_at"`
 		UpdatedAt time.Time  `json:"updated_at"`
 	} `json:"device"`

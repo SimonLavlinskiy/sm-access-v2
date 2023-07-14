@@ -2,15 +2,12 @@ package deviceController
 
 import (
 	"encoding/json"
+	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"math"
+	"net/http"
 	model "sm-access/src/models"
 	"sm-access/src/service/deviceService"
-	"github.com/google/uuid"
-	"net/http"
-	"github.com/gin-gonic/gin"
-
-
-
 )
 
 var DeviceController *deviceController
@@ -111,14 +108,16 @@ func (controller deviceController) CreateOne(c *gin.Context){
 
 	service := deviceService.DeviceService{}
 
-	baseModel := model.BaseModel{
+	baseModel := model.BaseModel {
 		ID: (uuid.New()).String(),
 	}
 
-	device := model.Device{
-		BaseModel: baseModel,
-		Name:      request.Name,
+	device := model.Device {
+		BaseModel: 	baseModel,
+		Name:      	request.Name,
 	    Imei: 		request.Imei,
+	    Type:		request.Type,
+	    OSVersion:  request.OSVersion,
 	}
 
 	device, err := service.CreateDevice(device)
