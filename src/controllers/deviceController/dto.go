@@ -24,7 +24,16 @@ type GetDeviceRequest struct {
 }
 
 type GetManyResponse struct {
-	Devices []Device `json:"devices"`
+	Devices []struct {
+		Id          string    `json:"id"`
+		Name        string    `json:"name"`
+		Imei        string    `json:"imei"`
+		Type        string    `json:"type"`
+		OSVersion   string    `json:"os_version"`
+		IsConnected bool      `json:"is_connected"`
+		CreatedAt   time.Time `json:"created_at"`
+		UpdatedAt   time.Time `json:"updated_at"`
+	}
 }
 
 type GetOneResponse struct {
@@ -40,13 +49,14 @@ type CreateOneRequest struct {
 
 type CreateOneResponse struct {
 	Device struct {
-		Id        string    `json:"id"`
-		Name      string    `json:"name"`
-		Imei      string    `json:"imei"`
-		Type      string    `json:"type"`
-		OSVersion string    `json:"os_version"`
-		CreatedAt time.Time `json:"created_at"`
-		UpdatedAt time.Time `json:"updated_at"`
+		Id          string    `json:"id"`
+		Name        string    `json:"name"`
+		Imei        string    `json:"imei"`
+		Type        string    `json:"type"`
+		OSVersion   string    `json:"os_version"`
+		IsConnected bool      `json:"is_connected"`
+		CreatedAt   time.Time `json:"created_at"`
+		UpdatedAt   time.Time `json:"updated_at"`
 	} `json:"device"`
 }
 
