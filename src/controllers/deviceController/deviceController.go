@@ -173,10 +173,10 @@ func (controller deviceController) UpdateOne(c *gin.Context) {
 	}
 
 	updateDevice := model.Device{
-		Name: request.Name,
-		Imei: request.Imei,
+		Name:      request.Name,
+		Imei:      request.Imei,
 		OSVersion: request.OSVersion,
-		Type: request.Type,
+		Type:      request.Type,
 	}
 
 	err = service.UpdateDevice(updateDevice, id)

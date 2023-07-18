@@ -52,10 +52,10 @@ type CreateOneResponse struct {
 }
 
 type UpdateOneRequest struct {
-	Name	 	string	`json:"name"`
-	Imei	 	string	`json:"imei"`
-	Type	 	string	`json:"type"`
-	OSVersion	string	`json:"os_version"`
+	Name      string `json:"name"`
+	Imei      string `json:"imei"`
+	Type      string `json:"type"`
+	OSVersion string `json:"os_version"`
 }
 
 type UpdateOneResponse struct {
