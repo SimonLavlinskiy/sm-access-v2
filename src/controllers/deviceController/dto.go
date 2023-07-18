@@ -1,22 +1,12 @@
 package deviceController
 
 import (
+	"sm-access/src/models"
 	"time"
 )
 
 type Device struct {
-	Id        string    `json:"id"`
-	Name      string    `json:"name"`
-	Imei      string    `json:"imei"`
-	Type      string    `json:"type"`
-	OSVersion string    `json:"os_version"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
-}
-
-type ErrorResponse struct {
-	ErrorCode    int     `json:"errorCode"`
-	ErrorMessage *string `json:"errorMessage"`
+	models.Device
 }
 
 type GetOneRequest struct {

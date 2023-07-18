@@ -18,24 +18,7 @@ definitions:
   deviceController.CreateOneResponse:
     properties:
       device:
-        properties:
-          created_at:
-            type: string
-          id:
-            type: string
-          imei:
-            type: string
-          is_connected:
-            type: boolean
-          name:
-            type: string
-          os_version:
-            type: string
-          type:
-            type: string
-          updated_at:
-            type: string
-        type: object
+        $ref: '#/definitions/deviceController.Device'
     type: object
   deviceController.DeleteOneResponse:
     properties:
@@ -46,24 +29,25 @@ definitions:
     properties:
       created_at:
         type: string
+      deleted_at:
+        type: string
       id:
         type: string
       imei:
         type: string
+      is_connected:
+        type: boolean
       name:
         type: string
       os_version:
         type: string
+      product_name:
+        type: string
+      serial_number:
+        type: string
       type:
         type: string
       updated_at:
-        type: string
-    type: object
-  deviceController.ErrorResponse:
-    properties:
-      errorCode:
-        type: integer
-      errorMessage:
         type: string
     type: object
   deviceController.GetManyResponse:
@@ -108,15 +92,39 @@ definitions:
     type: object
   deviceController.UpdateOneResponse:
     properties:
+      device:
+        $ref: '#/definitions/deviceController.Device'
+    type: object
+  models.ErrorResponse:
+    properties:
+      errorCode:
+        type: integer
+      errorMessage:
+        type: string
+    type: object
+  userController.CreateOneRequest:
+    properties:
+      plainPassword:
+        type: string
+      username:
+        type: string
+    type: object
+  userController.CreateOneResponse:
+    properties:
+      user:
+        $ref: '#/definitions/userController.User'
+    type: object
+  userController.User:
+    properties:
       created_at:
+        type: string
+      deleted_at:
         type: string
       id:
         type: string
-      imei:
-        type: string
-      name:
-        type: string
       updated_at:
+        type: string
+      username:
         type: string
     type: object
 info:
@@ -159,7 +167,7 @@ paths:
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/deviceController.ErrorResponse'
+            $ref: '#/definitions/models.ErrorResponse'
       tags:
       - Device
     post:
@@ -182,7 +190,8 @@ paths:
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/deviceController.ErrorResponse'
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Создание нового устройства
       tags:
       - Device
   /devices/{id}:
@@ -205,7 +214,7 @@ paths:
         "204":
           description: No Content
           schema:
-            $ref: '#/definitions/deviceController.ErrorResponse'
+            $ref: '#/definitions/models.ErrorResponse'
       tags:
       - Device
     get:
@@ -227,7 +236,7 @@ paths:
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/deviceController.ErrorResponse'
+            $ref: '#/definitions/models.ErrorResponse'
       tags:
       - Device
     put:
@@ -255,7 +264,31 @@ paths:
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/deviceController.ErrorResponse'
+            $ref: '#/definitions/models.ErrorResponse'
       tags:
       - Device
+  /users:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/userController.CreateOneRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/userController.CreateOneResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      tags:
+      - User
 swagger: "2.0"

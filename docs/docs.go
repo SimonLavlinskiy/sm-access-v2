@@ -74,7 +74,7 @@ var doc = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/deviceController.ErrorResponse"
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     }
                 }
@@ -89,6 +89,7 @@ var doc = `{
                 "tags": [
                     "Device"
                 ],
+                "summary": "Создание нового устройства",
                 "parameters": [
                     {
                         "description": "body",
@@ -110,7 +111,7 @@ var doc = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/deviceController.ErrorResponse"
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     }
                 }
@@ -146,7 +147,7 @@ var doc = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/deviceController.ErrorResponse"
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     }
                 }
@@ -189,7 +190,7 @@ var doc = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/deviceController.ErrorResponse"
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     }
                 }
@@ -223,7 +224,45 @@ var doc = `{
                     "204": {
                         "description": "No Content",
                         "schema": {
-                            "$ref": "#/definitions/deviceController.ErrorResponse"
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/userController.CreateOneRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/userController.CreateOneResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     }
                 }
@@ -257,33 +296,7 @@ var doc = `{
             "type": "object",
             "properties": {
                 "device": {
-                    "type": "object",
-                    "properties": {
-                        "created_at": {
-                            "type": "string"
-                        },
-                        "id": {
-                            "type": "string"
-                        },
-                        "imei": {
-                            "type": "string"
-                        },
-                        "is_connected": {
-                            "type": "boolean"
-                        },
-                        "name": {
-                            "type": "string"
-                        },
-                        "os_version": {
-                            "type": "string"
-                        },
-                        "type": {
-                            "type": "string"
-                        },
-                        "updated_at": {
-                            "type": "string"
-                        }
-                    }
+                    "$ref": "#/definitions/deviceController.Device"
                 }
             }
         },
@@ -301,11 +314,17 @@ var doc = `{
                 "created_at": {
                     "type": "string"
                 },
+                "deleted_at": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "string"
                 },
                 "imei": {
                     "type": "string"
+                },
+                "is_connected": {
+                    "type": "boolean"
                 },
                 "name": {
                     "type": "string"
@@ -313,21 +332,16 @@ var doc = `{
                 "os_version": {
                     "type": "string"
                 },
+                "product_name": {
+                    "type": "string"
+                },
+                "serial_number": {
+                    "type": "string"
+                },
                 "type": {
                     "type": "string"
                 },
                 "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
-        "deviceController.ErrorResponse": {
-            "type": "object",
-            "properties": {
-                "errorCode": {
-                    "type": "integer"
-                },
-                "errorMessage": {
                     "type": "string"
                 }
             }
@@ -397,19 +411,57 @@ var doc = `{
         "deviceController.UpdateOneResponse": {
             "type": "object",
             "properties": {
+                "device": {
+                    "$ref": "#/definitions/deviceController.Device"
+                }
+            }
+        },
+        "models.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "errorCode": {
+                    "type": "integer"
+                },
+                "errorMessage": {
+                    "type": "string"
+                }
+            }
+        },
+        "userController.CreateOneRequest": {
+            "type": "object",
+            "properties": {
+                "plainPassword": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "userController.CreateOneResponse": {
+            "type": "object",
+            "properties": {
+                "user": {
+                    "$ref": "#/definitions/userController.User"
+                }
+            }
+        },
+        "userController.User": {
+            "type": "object",
+            "properties": {
                 "created_at": {
+                    "type": "string"
+                },
+                "deleted_at": {
                     "type": "string"
                 },
                 "id": {
                     "type": "string"
                 },
-                "imei": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
                 "updated_at": {
+                    "type": "string"
+                },
+                "username": {
                     "type": "string"
                 }
             }

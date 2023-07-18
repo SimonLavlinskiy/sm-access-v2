@@ -1,12 +1,12 @@
 package userService
 
 import (
-	"sm-access/app/models"
 	"sm-access/config"
+	"sm-access/src/models"
 	"time"
 )
 
-type UserServiceInterface interface {
+type Interface interface {
 }
 
 type UserService struct {

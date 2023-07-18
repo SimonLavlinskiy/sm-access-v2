@@ -30,7 +30,7 @@ func NewDeviceController() *deviceController {
 // @Param filter[id][eq] query string false "фильтр по полному совпадению"
 // @Param filter[name][includes] query string false "фильтр по неполному совпадению"
 // @Success 200 {object} GetManyResponse
-// @Success 401 {object} ErrorResponse
+// @Success 401 {object} models.ErrorResponse
 // @Router /devices [get]
 func (controller deviceController) GetMany(c *gin.Context) {
 
@@ -42,7 +42,7 @@ func (controller deviceController) GetMany(c *gin.Context) {
 	meta.TotalPages = int(math.Ceil(float64(totalCount) / float64(meta.Per)))
 	if err != nil {
 		e := err.Error()
-		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, ErrorResponse{ErrorMessage: &e, ErrorCode: http.StatusUnprocessableEntity})
+		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, model.ErrorResponse{ErrorMessage: &e, ErrorCode: http.StatusUnprocessableEntity})
 		return
 	}
 
@@ -62,7 +62,7 @@ func (controller deviceController) GetMany(c *gin.Context) {
 // @Tags Device
 // @Param id path string true "id"
 // @Success 200 {object} GetOneResponse
-// @Success 401 {object} ErrorResponse
+// @Success 401 {object} models.ErrorResponse
 // @Router /devices/{id} [get]
 func (controller deviceController) GetOne(c *gin.Context) {
 
@@ -70,7 +70,7 @@ func (controller deviceController) GetOne(c *gin.Context) {
 
 	if param == "" {
 		e := "id parameter not specified"
-		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, ErrorResponse{ErrorMessage: &e, ErrorCode: http.StatusUnprocessableEntity})
+		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, model.ErrorResponse{ErrorMessage: &e, ErrorCode: http.StatusUnprocessableEntity})
 		return
 	}
 
@@ -80,7 +80,7 @@ func (controller deviceController) GetOne(c *gin.Context) {
 
 	if err != nil {
 		e := err.Error()
-		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, ErrorResponse{ErrorMessage: &e, ErrorCode: http.StatusUnprocessableEntity})
+		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, model.ErrorResponse{ErrorMessage: &e, ErrorCode: http.StatusUnprocessableEntity})
 		return
 	}
 	response := GetOneResponse{}
@@ -92,21 +92,22 @@ func (controller deviceController) GetOne(c *gin.Context) {
 }
 
 // CreateOne
-// @Summary
+// @Summary Создание нового устройства
 // @Description
 // @Accept json
 // @Produce json
 // @Tags Device
 // @Param body body CreateOneRequest true "body"
 // @Success 200 {object} CreateOneResponse
-// @Success 401 {object} ErrorResponse
+// @Success 401 {object} models.ErrorResponse
 // @Router /devices [post]
 func (controller deviceController) CreateOne(c *gin.Context) {
 
 	request := &CreateOneRequest{}
 
 	if err := c.ShouldBindJSON(request); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		e := err.Error()
+		c.AbortWithStatusJSON(http.StatusBadRequest, model.ErrorResponse{ErrorMessage: &e, ErrorCode: http.StatusBadRequest})
 		return
 	}
 	service := deviceService.DeviceService{}
@@ -126,7 +127,7 @@ func (controller deviceController) CreateOne(c *gin.Context) {
 	device, err := service.CreateDevice(device)
 	if err != nil {
 		e := err.Error()
-		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, ErrorResponse{ErrorMessage: &e, ErrorCode: http.StatusUnprocessableEntity})
+		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, model.ErrorResponse{ErrorMessage: &e, ErrorCode: http.StatusUnprocessableEntity})
 		return
 	}
 
@@ -146,14 +147,14 @@ func (controller deviceController) CreateOne(c *gin.Context) {
 // @Param id path string true "id"
 // @Param body body UpdateOneRequest true "body"
 // @Success 200 {object} UpdateOneResponse
-// @Success 401 {object} ErrorResponse
+// @Success 401 {object} models.ErrorResponse
 // @Router /devices/{id} [put]
 func (controller deviceController) UpdateOne(c *gin.Context) {
 	id := c.Param("id")
 
 	if id == "" {
 		e := "id parameter not specified"
-		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, ErrorResponse{ErrorMessage: &e, ErrorCode: http.StatusUnprocessableEntity})
+		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, model.ErrorResponse{ErrorMessage: &e, ErrorCode: http.StatusUnprocessableEntity})
 		return
 	}
 
@@ -162,13 +163,14 @@ func (controller deviceController) UpdateOne(c *gin.Context) {
 	err, _ := service.GetDevice(id)
 	if err != nil {
 		e := err.Error()
-		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, ErrorResponse{ErrorMessage: &e, ErrorCode: http.StatusUnprocessableEntity})
+		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, model.ErrorResponse{ErrorMessage: &e, ErrorCode: http.StatusUnprocessableEntity})
 		return
 	}
 
 	request := &UpdateOneRequest{}
 	if err := c.ShouldBindJSON(request); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		e := err.Error()
+		c.AbortWithStatusJSON(http.StatusBadRequest, model.ErrorResponse{ErrorMessage: &e, ErrorCode: http.StatusBadRequest})
 		return
 	}
 
@@ -182,7 +184,7 @@ func (controller deviceController) UpdateOne(c *gin.Context) {
 	err = service.UpdateDevice(updateDevice, id)
 	if err != nil {
 		e := err.Error()
-		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, ErrorResponse{ErrorMessage: &e, ErrorCode: http.StatusUnprocessableEntity})
+		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, model.ErrorResponse{ErrorMessage: &e, ErrorCode: http.StatusUnprocessableEntity})
 		return
 	}
 
@@ -204,7 +206,7 @@ func (controller deviceController) UpdateOne(c *gin.Context) {
 // @Tags Device
 // @Param id path string true "id"
 // @Success 200 {object} DeleteOneResponse
-// @Success 204 {object} ErrorResponse
+// @Success 204 {object} models.ErrorResponse
 // @Router /devices/{id} [delete]
 func (controller deviceController) DeleteOne(c *gin.Context) {
 	service := deviceService.DeviceService{}
@@ -213,21 +215,21 @@ func (controller deviceController) DeleteOne(c *gin.Context) {
 
 	if id == "" {
 		e := "id parameter not specified"
-		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, ErrorResponse{ErrorMessage: &e, ErrorCode: http.StatusUnprocessableEntity})
+		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, model.ErrorResponse{ErrorMessage: &e, ErrorCode: http.StatusUnprocessableEntity})
 		return
 	}
 
 	err, _ := service.GetDevice(id)
 	if err != nil {
 		e := err.Error()
-		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, ErrorResponse{ErrorMessage: &e, ErrorCode: http.StatusUnprocessableEntity})
+		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, model.ErrorResponse{ErrorMessage: &e, ErrorCode: http.StatusUnprocessableEntity})
 		return
 	}
 
 	err = service.DeleteDevice(id)
 	if err != nil {
 		e := err.Error()
-		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, ErrorResponse{ErrorMessage: &e, ErrorCode: http.StatusUnprocessableEntity})
+		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, model.ErrorResponse{ErrorMessage: &e, ErrorCode: http.StatusUnprocessableEntity})
 		return
 	}
 

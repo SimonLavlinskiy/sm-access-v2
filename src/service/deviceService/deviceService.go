@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-type DeviceServiceInterface interface {
+type Interface interface {
 }
 
 type DeviceService struct {

@@ -8,6 +8,7 @@ import (
 	"os"
 	"sm-access/docs"
 	"sm-access/src/controllers/deviceController"
+	"sm-access/src/controllers/userController"
 )
 
 func InitServer() *gin.Engine {
@@ -42,7 +43,10 @@ func InitServer() *gin.Engine {
 				device.POST("", deviceController.DeviceController.CreateOne)
 				device.PUT(":id", deviceController.DeviceController.UpdateOne)
 				device.DELETE(":id", deviceController.DeviceController.DeleteOne)
-
+			}
+			user := v1.Group("users")
+			{
+				user.POST("", userController.UserController.CreateOne)
 			}
 		}
 

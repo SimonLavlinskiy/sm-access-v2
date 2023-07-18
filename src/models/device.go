@@ -9,5 +9,4 @@ type Device struct {
 	Type         string `json:"type"`
 	OSVersion    string `json:"os_version"`
 	IsConnected  bool   `json:"is_connected"`
-	// type (IOS or Android), OSversion, isConnected (bool), + CRUD for USER
 }
