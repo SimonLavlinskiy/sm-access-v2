@@ -8,7 +8,7 @@ type User struct {
 }
 
 type CreateOneRequest struct {
-	Username string `json:"username"`
+	Username      string `json:"username"`
 	PlainPassword string `json:"plainPassword"`
 }
 
