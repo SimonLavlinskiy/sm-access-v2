@@ -19,7 +19,7 @@ type ErrorResponse struct {
 	ErrorMessage *string `json:"errorMessage"`
 }
 
-type GetDeviceRequest struct {
+type GetOneRequest struct {
 	Data string `json:"data"`
 }
 
@@ -48,29 +48,18 @@ type CreateOneRequest struct {
 }
 
 type CreateOneResponse struct {
-	Device struct {
-		Id          string    `json:"id"`
-		Name        string    `json:"name"`
-		Imei        string    `json:"imei"`
-		Type        string    `json:"type"`
-		OSVersion   string    `json:"os_version"`
-		IsConnected bool      `json:"is_connected"`
-		CreatedAt   time.Time `json:"created_at"`
-		UpdatedAt   time.Time `json:"updated_at"`
-	} `json:"device"`
+	Device Device `json:"device"`
 }
 
 type UpdateOneRequest struct {
-	Name string `json:"name"`
-	Imei string `json:"imei"`
+	Name	 	string	`json:"name"`
+	Imei	 	string	`json:"imei"`
+	Type	 	string	`json:"type"`
+	OSVersion	string	`json:"os_version"`
 }
 
 type UpdateOneResponse struct {
-	Id        string    `json:"id"`
-	Name      string    `json:"name"`
-	Imei      string    `json:"imei"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	Device Device `json:"device"`
 }
 
 type DeleteOneResponse struct {

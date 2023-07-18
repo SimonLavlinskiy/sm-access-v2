@@ -268,6 +268,9 @@ var doc = `{
                         "imei": {
                             "type": "string"
                         },
+                        "is_connected": {
+                            "type": "boolean"
+                        },
                         "name": {
                             "type": "string"
                         },
@@ -335,7 +338,33 @@ var doc = `{
                 "devices": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/deviceController.Device"
+                        "type": "object",
+                        "properties": {
+                            "created_at": {
+                                "type": "string"
+                            },
+                            "id": {
+                                "type": "string"
+                            },
+                            "imei": {
+                                "type": "string"
+                            },
+                            "is_connected": {
+                                "type": "boolean"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "os_version": {
+                                "type": "string"
+                            },
+                            "type": {
+                                "type": "string"
+                            },
+                            "updated_at": {
+                                "type": "string"
+                            }
+                        }
                     }
                 }
             }
@@ -355,6 +384,12 @@ var doc = `{
                     "type": "string"
                 },
                 "name": {
+                    "type": "string"
+                },
+                "os_version": {
+                    "type": "string"
+                },
+                "type": {
                     "type": "string"
                 }
             }

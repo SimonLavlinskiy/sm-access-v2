@@ -25,6 +25,8 @@ definitions:
             type: string
           imei:
             type: string
+          is_connected:
+            type: boolean
           name:
             type: string
           os_version:
@@ -68,7 +70,24 @@ definitions:
     properties:
       devices:
         items:
-          $ref: '#/definitions/deviceController.Device'
+          properties:
+            created_at:
+              type: string
+            id:
+              type: string
+            imei:
+              type: string
+            is_connected:
+              type: boolean
+            name:
+              type: string
+            os_version:
+              type: string
+            type:
+              type: string
+            updated_at:
+              type: string
+          type: object
         type: array
     type: object
   deviceController.GetOneResponse:
@@ -81,6 +100,10 @@ definitions:
       imei:
         type: string
       name:
+        type: string
+      os_version:
+        type: string
+      type:
         type: string
     type: object
   deviceController.UpdateOneResponse:

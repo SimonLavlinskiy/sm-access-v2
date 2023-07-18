@@ -87,7 +87,7 @@ func (controller deviceController) GetOne(c *gin.Context) {
 	temporaryVariable, _ := json.Marshal(device)
 	err = json.Unmarshal(temporaryVariable, &response.Device)
 
-	c.AbortWithStatusJSON(http.StatusOK, GetOneResponse{Device: response.Device})
+	c.AbortWithStatusJSON(http.StatusOK, response.Device)
 	return
 }
 
@@ -132,8 +132,8 @@ func (controller deviceController) CreateOne(c *gin.Context) {
 
 	response := CreateOneResponse{}
 	temporaryVariable, _ := json.Marshal(device)
-	err = json.Unmarshal(temporaryVariable, &response.Device)
-	c.AbortWithStatusJSON(http.StatusOK, CreateOneResponse{Device: response.Device})
+	err = json.Unmarshal(temporaryVariable, &response)
+	c.AbortWithStatusJSON(http.StatusOK, device)
 	return
 }
 
@@ -167,10 +167,16 @@ func (controller deviceController) UpdateOne(c *gin.Context) {
 	}
 
 	request := &UpdateOneRequest{}
+	if err := c.ShouldBindJSON(request); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
 	updateDevice := model.Device{
 		Name: request.Name,
 		Imei: request.Imei,
+		OSVersion: request.OSVersion,
+		Type: request.Type,
 	}
 
 	err = service.UpdateDevice(updateDevice, id)
@@ -185,7 +191,7 @@ func (controller deviceController) UpdateOne(c *gin.Context) {
 	response := UpdateOneResponse{}
 	temporaryVariable, _ := json.Marshal(device)
 	err = json.Unmarshal(temporaryVariable, &response)
-	c.AbortWithStatusJSON(http.StatusOK, UpdateOneResponse{Id: device.ID, Name: device.Name, Imei: device.Imei})
+	c.AbortWithStatusJSON(http.StatusOK, device)
 	return
 
 }
