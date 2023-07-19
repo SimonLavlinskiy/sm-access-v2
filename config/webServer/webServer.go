@@ -47,9 +47,12 @@ func InitServer() *gin.Engine {
 			user := v1.Group("users")
 			{
 				user.POST("", userController.UserController.CreateOne)
+				user.GET("", userController.UserController.GetMany)
+				user.GET(":id", userController.UserController.GetOne)
+				user.PUT(":id", userController.UserController.UpdateOne)
+				user.DELETE(":id", userController.UserController.DeleteOne)
 			}
 		}
-
 	}
 
 	return g

@@ -1,4 +1,4 @@
-package deviceController
+package queryService
 
 import (
 	"github.com/gin-gonic/gin"
@@ -16,6 +16,7 @@ type Meta struct {
 	Page       int `json:"page"`
 	Per        int `json:"per"`
 	TotalPages int `json:"total_pages"`
+	TotalItems int `json:"total_items"`
 }
 
 func GetQueries(c *gin.Context) (Queries, Meta) {

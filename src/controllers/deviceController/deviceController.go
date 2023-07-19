@@ -8,6 +8,7 @@ import (
 	"net/http"
 	model "sm-access/src/models"
 	"sm-access/src/service/deviceService"
+	"sm-access/src/service/queryService"
 )
 
 var DeviceController *deviceController
@@ -36,10 +37,12 @@ func (controller deviceController) GetMany(c *gin.Context) {
 
 	service := deviceService.DeviceService{}
 
-	q, meta := GetQueries(c)
+	q, meta := queryService.GetQueries(c)
 
 	err, device, totalCount := service.GetDevices(q.Page, q.Per)
 	meta.TotalPages = int(math.Ceil(float64(totalCount) / float64(meta.Per)))
+	meta.TotalItems = int(totalCount)
+
 	if err != nil {
 		e := err.Error()
 		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, model.ErrorResponse{ErrorMessage: &e, ErrorCode: http.StatusUnprocessableEntity})
@@ -49,8 +52,8 @@ func (controller deviceController) GetMany(c *gin.Context) {
 	response := GetManyResponse{}
 	temp, _ := json.Marshal(device)
 	err = json.Unmarshal(temp, &response.Devices)
-
-	c.AbortWithStatusJSON(http.StatusOK, GetManyResponse{Devices: response.Devices})
+	response.Meta = meta
+	c.AbortWithStatusJSON(http.StatusOK, response)
 	return
 }
 
@@ -67,7 +70,6 @@ func (controller deviceController) GetMany(c *gin.Context) {
 func (controller deviceController) GetOne(c *gin.Context) {
 
 	param := c.Param("id")
-
 	if param == "" {
 		e := "id parameter not specified"
 		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, model.ErrorResponse{ErrorMessage: &e, ErrorCode: http.StatusUnprocessableEntity})
@@ -75,7 +77,6 @@ func (controller deviceController) GetOne(c *gin.Context) {
 	}
 
 	service := deviceService.DeviceService{}
-
 	err, device := service.GetDevice(param)
 
 	if err != nil {
@@ -83,10 +84,10 @@ func (controller deviceController) GetOne(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, model.ErrorResponse{ErrorMessage: &e, ErrorCode: http.StatusUnprocessableEntity})
 		return
 	}
+
 	response := GetOneResponse{}
 	temporaryVariable, _ := json.Marshal(device)
 	err = json.Unmarshal(temporaryVariable, &response.Device)
-
 	c.AbortWithStatusJSON(http.StatusOK, response.Device)
 	return
 }
@@ -133,8 +134,8 @@ func (controller deviceController) CreateOne(c *gin.Context) {
 
 	response := CreateOneResponse{}
 	temporaryVariable, _ := json.Marshal(device)
-	err = json.Unmarshal(temporaryVariable, &response)
-	c.AbortWithStatusJSON(http.StatusOK, device)
+	err = json.Unmarshal(temporaryVariable, &response.Device)
+	c.AbortWithStatusJSON(http.StatusOK, response.Device)
 	return
 }
 
@@ -174,11 +175,18 @@ func (controller deviceController) UpdateOne(c *gin.Context) {
 		return
 	}
 
-	updateDevice := model.Device{
-		Name:      request.Name,
-		Imei:      request.Imei,
-		OSVersion: request.OSVersion,
-		Type:      request.Type,
+	deviceData, err := json.Marshal(request)
+	if err != nil {
+		e := err.Error()
+		c.AbortWithStatusJSON(http.StatusBadRequest, model.ErrorResponse{ErrorMessage: &e, ErrorCode: http.StatusBadRequest})
+		return
+	}
+	var updateDevice model.Device
+	err = json.Unmarshal(deviceData, &updateDevice)
+	if err != nil {
+		e := err.Error()
+		c.AbortWithStatusJSON(http.StatusBadRequest, model.ErrorResponse{ErrorMessage: &e, ErrorCode: http.StatusBadRequest})
+		return
 	}
 
 	err = service.UpdateDevice(updateDevice, id)
@@ -192,8 +200,8 @@ func (controller deviceController) UpdateOne(c *gin.Context) {
 
 	response := UpdateOneResponse{}
 	temporaryVariable, _ := json.Marshal(device)
-	err = json.Unmarshal(temporaryVariable, &response)
-	c.AbortWithStatusJSON(http.StatusOK, device)
+	err = json.Unmarshal(temporaryVariable, &response.Device)
+	c.AbortWithStatusJSON(http.StatusOK, response.Device)
 	return
 
 }
@@ -209,8 +217,6 @@ func (controller deviceController) UpdateOne(c *gin.Context) {
 // @Success 204 {object} models.ErrorResponse
 // @Router /devices/{id} [delete]
 func (controller deviceController) DeleteOne(c *gin.Context) {
-	service := deviceService.DeviceService{}
-
 	id := c.Param("id")
 
 	if id == "" {
@@ -219,6 +225,7 @@ func (controller deviceController) DeleteOne(c *gin.Context) {
 		return
 	}
 
+	service := deviceService.DeviceService{}
 	err, _ := service.GetDevice(id)
 	if err != nil {
 		e := err.Error()

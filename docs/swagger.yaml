@@ -54,25 +54,10 @@ definitions:
     properties:
       devices:
         items:
-          properties:
-            created_at:
-              type: string
-            id:
-              type: string
-            imei:
-              type: string
-            is_connected:
-              type: boolean
-            name:
-              type: string
-            os_version:
-              type: string
-            type:
-              type: string
-            updated_at:
-              type: string
-          type: object
+          $ref: '#/definitions/deviceController.Device'
         type: array
+      meta:
+        $ref: '#/definitions/queryService.Meta'
     type: object
   deviceController.GetOneResponse:
     properties:
@@ -102,6 +87,17 @@ definitions:
       errorMessage:
         type: string
     type: object
+  queryService.Meta:
+    properties:
+      page:
+        type: integer
+      per:
+        type: integer
+      total_items:
+        type: integer
+      total_pages:
+        type: integer
+    type: object
   userController.CreateOneRequest:
     properties:
       plainPassword:
@@ -110,6 +106,35 @@ definitions:
         type: string
     type: object
   userController.CreateOneResponse:
+    properties:
+      user:
+        $ref: '#/definitions/userController.User'
+    type: object
+  userController.DeleteOneResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  userController.GetManyResponse:
+    properties:
+      meta:
+        $ref: '#/definitions/queryService.Meta'
+      users:
+        items:
+          $ref: '#/definitions/userController.User'
+        type: array
+    type: object
+  userController.GetOneResponse:
+    properties:
+      user:
+        $ref: '#/definitions/userController.User'
+    type: object
+  userController.UpdateOneRequest:
+    properties:
+      username:
+        type: string
+    type: object
+  userController.UpdateOneResponse:
     properties:
       user:
         $ref: '#/definitions/userController.User'
@@ -268,6 +293,39 @@ paths:
       tags:
       - Device
   /users:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - default: 30
+        description: limit element per page
+        in: query
+        name: per
+        required: true
+        type: integer
+      - default: 1
+        description: page number
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: фильтр по полному совпадению
+        in: query
+        name: filter[id][eq]
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/userController.GetManyResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      tags:
+      - User
     post:
       consumes:
       - application/json
@@ -285,6 +343,79 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/userController.CreateOneResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      tags:
+      - User
+  /users/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/userController.DeleteOneResponse'
+        "204":
+          description: No Content
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      tags:
+      - User
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/userController.GetOneResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      tags:
+      - User
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/userController.UpdateOneRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/userController.UpdateOneResponse'
         "401":
           description: Unauthorized
           schema:

@@ -2,28 +2,16 @@ package deviceController
 
 import (
 	"sm-access/src/models"
-	"time"
+	"sm-access/src/service/queryService"
 )
 
 type Device struct {
 	models.Device
 }
 
-type GetOneRequest struct {
-	Data string `json:"data"`
-}
-
 type GetManyResponse struct {
-	Devices []struct {
-		Id          string    `json:"id"`
-		Name        string    `json:"name"`
-		Imei        string    `json:"imei"`
-		Type        string    `json:"type"`
-		OSVersion   string    `json:"os_version"`
-		IsConnected bool      `json:"is_connected"`
-		CreatedAt   time.Time `json:"created_at"`
-		UpdatedAt   time.Time `json:"updated_at"`
-	}
+	Meta queryService.Meta `json:"meta"`
+	Devices []Device `json:"devices"`
 }
 
 type GetOneResponse struct {
