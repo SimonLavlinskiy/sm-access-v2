@@ -74,7 +74,7 @@ var doc = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/deviceController.ErrorResponse"
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     }
                 }
@@ -89,6 +89,7 @@ var doc = `{
                 "tags": [
                     "Device"
                 ],
+                "summary": "Создание нового устройства",
                 "parameters": [
                     {
                         "description": "body",
@@ -110,7 +111,7 @@ var doc = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/deviceController.ErrorResponse"
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     }
                 }
@@ -146,7 +147,7 @@ var doc = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/deviceController.ErrorResponse"
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     }
                 }
@@ -189,7 +190,7 @@ var doc = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/deviceController.ErrorResponse"
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     }
                 }
@@ -223,7 +224,207 @@ var doc = `{
                     "204": {
                         "description": "No Content",
                         "schema": {
-                            "$ref": "#/definitions/deviceController.ErrorResponse"
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 30,
+                        "description": "limit element per page",
+                        "name": "per",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "page number",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "фильтр по полному совпадению",
+                        "name": "filter[id][eq]",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/userController.GetManyResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/userController.CreateOneRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/userController.CreateOneResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/userController.GetOneResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "body",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/userController.UpdateOneRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/userController.UpdateOneResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/userController.DeleteOneResponse"
+                        }
+                    },
+                    "204": {
+                        "description": "No Content",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     }
                 }
@@ -235,13 +436,20 @@ var doc = `{
             "type": "object",
             "required": [
                 "imei",
-                "name"
+                "name",
+                "type"
             ],
             "properties": {
                 "imei": {
                     "type": "string"
                 },
                 "name": {
+                    "type": "string"
+                },
+                "os_version": {
+                    "type": "string"
+                },
+                "type": {
                     "type": "string"
                 }
             }
@@ -250,24 +458,7 @@ var doc = `{
             "type": "object",
             "properties": {
                 "device": {
-                    "type": "object",
-                    "properties": {
-                        "created_at": {
-                            "type": "string"
-                        },
-                        "id": {
-                            "type": "string"
-                        },
-                        "imei": {
-                            "type": "string"
-                        },
-                        "name": {
-                            "type": "string"
-                        },
-                        "updated_at": {
-                            "type": "string"
-                        }
-                    }
+                    "$ref": "#/definitions/deviceController.Device"
                 }
             }
         },
@@ -285,27 +476,34 @@ var doc = `{
                 "created_at": {
                     "type": "string"
                 },
+                "deleted_at": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "string"
                 },
                 "imei": {
                     "type": "string"
                 },
+                "is_connected": {
+                    "type": "boolean"
+                },
                 "name": {
                     "type": "string"
                 },
-                "updated_at": {
+                "os_version": {
                     "type": "string"
-                }
-            }
-        },
-        "deviceController.ErrorResponse": {
-            "type": "object",
-            "properties": {
-                "errorCode": {
-                    "type": "integer"
                 },
-                "errorMessage": {
+                "product_name": {
+                    "type": "string"
+                },
+                "serial_number": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "updated_at": {
                     "type": "string"
                 }
             }
@@ -318,13 +516,16 @@ var doc = `{
                     "items": {
                         "$ref": "#/definitions/deviceController.Device"
                     }
+                },
+                "meta": {
+                    "$ref": "#/definitions/queryService.Meta"
                 }
             }
         },
         "deviceController.GetOneResponse": {
             "type": "object",
             "properties": {
-                "devices": {
+                "device": {
                     "$ref": "#/definitions/deviceController.Device"
                 }
             }
@@ -337,25 +538,132 @@ var doc = `{
                 },
                 "name": {
                     "type": "string"
+                },
+                "os_version": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
                 }
             }
         },
         "deviceController.UpdateOneResponse": {
             "type": "object",
             "properties": {
+                "device": {
+                    "$ref": "#/definitions/deviceController.Device"
+                }
+            }
+        },
+        "models.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "errorCode": {
+                    "type": "integer"
+                },
+                "errorMessage": {
+                    "type": "string"
+                }
+            }
+        },
+        "queryService.Meta": {
+            "type": "object",
+            "properties": {
+                "page": {
+                    "type": "integer"
+                },
+                "per": {
+                    "type": "integer"
+                },
+                "total_items": {
+                    "type": "integer"
+                },
+                "total_pages": {
+                    "type": "integer"
+                }
+            }
+        },
+        "userController.CreateOneRequest": {
+            "type": "object",
+            "properties": {
+                "plainPassword": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "userController.CreateOneResponse": {
+            "type": "object",
+            "properties": {
+                "user": {
+                    "$ref": "#/definitions/userController.User"
+                }
+            }
+        },
+        "userController.DeleteOneResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "userController.GetManyResponse": {
+            "type": "object",
+            "properties": {
+                "meta": {
+                    "$ref": "#/definitions/queryService.Meta"
+                },
+                "users": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/userController.User"
+                    }
+                }
+            }
+        },
+        "userController.GetOneResponse": {
+            "type": "object",
+            "properties": {
+                "user": {
+                    "$ref": "#/definitions/userController.User"
+                }
+            }
+        },
+        "userController.UpdateOneRequest": {
+            "type": "object",
+            "properties": {
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "userController.UpdateOneResponse": {
+            "type": "object",
+            "properties": {
+                "user": {
+                    "$ref": "#/definitions/userController.User"
+                }
+            }
+        },
+        "userController.User": {
+            "type": "object",
+            "properties": {
                 "created_at": {
+                    "type": "string"
+                },
+                "deleted_at": {
                     "type": "string"
                 },
                 "id": {
                     "type": "string"
                 },
-                "imei": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
                 "updated_at": {
+                    "type": "string"
+                },
+                "username": {
                     "type": "string"
                 }
             }
