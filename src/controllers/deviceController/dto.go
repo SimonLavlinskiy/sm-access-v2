@@ -10,8 +10,8 @@ type Device struct {
 }
 
 type GetManyResponse struct {
-	Meta queryService.Meta `json:"meta"`
-	Devices []Device `json:"devices"`
+	Meta    queryService.Meta `json:"meta"`
+	Devices []Device          `json:"devices"`
 }
 
 type GetOneResponse struct {

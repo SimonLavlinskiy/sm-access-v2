@@ -24,12 +24,12 @@ type GetOneResponse struct {
 }
 
 type GetManyResponse struct {
-	Meta queryService.Meta `json:"meta"`
-	Users []User `json:"users"`
+	Meta  queryService.Meta `json:"meta"`
+	Users []User            `json:"users"`
 }
 
 type UpdateOneRequest struct {
-	Username      string `json:"username"`
+	Username string `json:"username"`
 }
 
 type UpdateOneResponse struct {
